@@ -96,3 +96,7 @@
 - **Timestamp:** 2026-07-03 01:42:26 UTC+8
 - **Action:** Initialized the local Git repository, configured the GitHub remote, staged project files, and created the initial commit `1909a84`.
 - **Outcome:** Local commit `Prepare Windows portable release` was created successfully; push to GitHub is pending.
+
+- **Timestamp:** 2026-07-03 01:43:25 UTC+8
+- **Action:** Attempted to push local `main` to `https://github.com/SleepingLingHuan/MyNote.git`.
+- **Outcome:** Push was rejected because the remote `main` branch already contains commits that are not present locally; no remote history was overwritten.
