@@ -1,0 +1,51 @@
+- **Timestamp:** 2026-07-02 00:56:50 UTC+8
+- **Action:** Created website technical design document based on `plan.md` and AGENTS requirements.
+- **Outcome:** Added `docs/website-technical-design.md` covering architecture, storage, Markdown editing, UI direction, performance, migration path, testing, and risks.
+- **Timestamp:** 2026-07-02 01:21:02 UTC+8
+- **Action:** Implemented zero-dependency static Web MVP for the local diary application.
+- **Outcome:** Added `web/` app with IndexedDB storage, category filtering, Markdown editing and preview, local image copy flow, workspace JSON import/export, responsive styling, and verified the localhost server returns the app files.
+- **Timestamp:** 2026-07-02 01:33:10 UTC+8
+- **Action:** Extended the static Web MVP with safer editing and richer Markdown support.
+- **Outcome:** Added category renaming, confirmed article deletion with asset cleanup, drag-and-drop image insertion, JSON import validation, table/task-list/heading Markdown rendering, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 01:54:34 UTC+8
+- **Action:** Added article metadata creation and explicit save workflow.
+- **Outcome:** New article creation now opens a title/category dialog, articles store creation and latest save times, the editor shows article date metadata, title/category edits are saved as article rename and recategorization, manual save button and Ctrl/Cmd+S save with confirmation status, and localhost plus syntax checks passed.
+- **Timestamp:** 2026-07-02 02:00:50 UTC+8
+- **Action:** Unified application dialog styling and replaced native browser dialogs.
+- **Outcome:** Added a shared styled dialog for prompts, alerts, and confirmations; migrated category creation, category renaming, delete confirmation, image/import errors, and initialization errors away from native browser dialogs; verified no native dialog calls remain and localhost plus syntax checks passed.
+- **Timestamp:** 2026-07-02 02:07:30 UTC+8
+- **Action:** Added per-article card action menus.
+- **Outcome:** Article cards now show a hover/focus ellipsis menu with rename, delete, category change, and single-entry export actions; added styled select-dialog support for category changes and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 02:10:31 UTC+8
+- **Action:** Fixed article card action menu hover behavior.
+- **Outcome:** Menu state is now held open while moving from the ellipsis button into the dropdown, the menu gap was removed, and syntax plus localhost serving checks passed.
+- **Timestamp:** 2026-07-02 02:19:24 UTC+8
+- **Action:** Redesigned dialog copy and added dialog entrance animation.
+- **Outcome:** Dialogs now use function-specific titles, descriptions, field labels, and button text for article/category creation, rename, recategorization, deletion, import, image, and initialization flows; added lightweight dialog/backdrop entrance animations with reduced-motion support; syntax and localhost checks passed.
+- **Timestamp:** 2026-07-02 02:23:50 UTC+8
+- **Action:** Fixed dialog optional-field visibility.
+- **Outcome:** Corrected the CSS visibility bug that caused hidden input/select fields to appear in every dialog; dialog opening now resets and disables unused controls so confirm-only, input-only, and select-only dialogs show only the controls their function requires; syntax and localhost serving checks passed.
+- **Timestamp:** 2026-07-02 02:36:57 UTC+8
+- **Action:** Added collapsible article list panel.
+- **Outcome:** The article list column now has a small hover-revealed midpoint toggle on its right border, supports collapsing and expanding the list panel, persists the collapsed state in localStorage, disables the side-collapse behavior on narrow mobile layouts, and passed syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 02:42:02 UTC+8
+- **Action:** Moved category actions into per-category ellipsis menus.
+- **Outcome:** Removed the four visible bottom-left category/import/export buttons; added category card ellipsis menus with rename, delete, create-child, and category-target import actions; added all-category menu actions for root category creation plus workspace import/export; added guarded category deletion, hierarchical subcategory rendering, descendant-aware category filtering, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 02:52:37 UTC+8
+- **Action:** Fixed category menu layering and adjusted create-entry/category controls.
+- **Outcome:** Removed the ellipsis menu from the non-category "All" filter, raised category menu stacking and overflow behavior so dropdowns are not clipped by neighboring panels, changed the MyNote header plus button to create categories, added a differently colored matching plus button in the article list header for creating articles, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 11:38:42 UTC+8
+- **Action:** Simplified editor header controls and added Markdown import/export support.
+- **Outcome:** Removed the editor header category selector and removed save/delete toolbar buttons, replaced the editor toolbar with edit/preview toggle plus image import controls in the header, changed save status to a circular check icon with saved/pending states, removed split mode, added Markdown export for entries/workspace, added Markdown import into categories, kept JSON import/export support, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 11:46:17 UTC+8
+- **Action:** Fixed initialization failure after editor control refactor.
+- **Outcome:** Added cache-busting resource versions, replaced direct event bindings with validated cached node references, improved initialization error messages to show the real cause, normalized legacy IndexedDB records with missing fields, and verified syntax plus cache-busted localhost serving checks.
+- **Timestamp:** 2026-07-02 11:58:47 UTC+8
+- **Action:** Added category-menu article creation and theme switching.
+- **Outcome:** Category ellipsis menus now include a new-article action prefilled with that category, added a persistent light/dark theme toggle in the lower-left sidebar, introduced dark VS Code-like theme variables, changed the editor mode toggle away from the theme-style icon, updated cache-busting versions, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 12:26:03 UTC+8
+- **Action:** Prepared project files for initial GitHub upload.
+- **Outcome:** Added minimal repository ignore rules so local editor, log, and macOS metadata files are excluded from the initial commit.
+- **Timestamp:** 2026-07-02 12:27:15 UTC+8
+- **Action:** Initialized the local Git repository and configured the GitHub remote.
+- **Outcome:** Created a `main` branch repository in the project root and set `origin` to `https://github.com/SleepingLingHuan/MyNote.git`.
