@@ -92,3 +92,7 @@
 - **Timestamp:** 2026-07-03 01:38:38 UTC+8
 - **Action:** Updated the README installation instructions for the Windows portable Release package.
 - **Outcome:** README now documents downloading `MyNote_*_windows_x64_portable.zip`, extracting it, running `mynote.exe`, and the unsigned-app warning.
+
+- **Timestamp:** 2026-07-03 01:42:26 UTC+8
+- **Action:** Initialized the local Git repository, configured the GitHub remote, staged project files, and created the initial commit `1909a84`.
+- **Outcome:** Local commit `Prepare Windows portable release` was created successfully; push to GitHub is pending.
