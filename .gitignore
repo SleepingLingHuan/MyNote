@@ -2,6 +2,17 @@
 .idea/
 .vscode/
 *.log
+*.txt
+*.md
+!README.md
 node_modules/
 src-tauri/target/
 src-tauri/gen/
+icon.png
+
+# docs
+Coding_Log.md
+AGENTS.md
+plan.md
+docs/
+desktop/
