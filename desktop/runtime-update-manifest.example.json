@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "runtimeVersion": 1,
+  "createdAt": "2026-07-02T00:00:00.000Z",
+  "assetBundle": {
+    "fileName": "mynote-web-assets-0.1.0.zip",
+    "sha256": "replace-with-release-sha256",
+    "entry": "index.html"
+  },
+  "notes": [
+    "Frontend-only update package.",
+    "Does not update the Tauri shell or native permissions."
+  ]
+}

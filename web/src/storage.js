@@ -2,6 +2,7 @@
   const DB_NAME = "mynote-local-db";
   const DB_VERSION = 1;
   const STORES = ["entries", "categories", "assets"];
+  const workspaceFormat = window.MyNoteWorkspaceFormat;
 
   let dbPromise;
 
@@ -102,38 +103,35 @@
       getAll("assets")
     ]);
 
-    return {
-      version: 1,
-      exportedAt: new Date().toISOString(),
+    return workspaceFormat.createWorkspace({
       entries,
       categories,
       assets
-    };
+    });
   }
 
   async function importWorkspace(workspace) {
-    if (!workspace || !Array.isArray(workspace.entries) || !Array.isArray(workspace.categories)) {
-      throw new Error("导入文件不是有效的 MyNote 工作区。");
-    }
+    const normalizedWorkspace = workspaceFormat.normalizeWorkspace(workspace);
 
     await Promise.all(STORES.map(clearStore));
 
-    for (const category of workspace.categories) {
+    for (const category of normalizedWorkspace.categories) {
       await putOne("categories", category);
     }
 
-    for (const entry of workspace.entries) {
+    for (const entry of normalizedWorkspace.entries) {
       await putOne("entries", entry);
     }
 
-    for (const asset of workspace.assets || []) {
+    for (const asset of normalizedWorkspace.assets) {
       await putOne("assets", asset);
     }
 
     await ensureDefaults();
   }
 
-  window.MyNoteStorage = {
+  const browserIndexedDbStorage = {
+    providerId: "browser-indexeddb",
     ensureDefaults,
     getEntries: () => getAll("entries"),
     getEntry: (id) => getOne("entries", id),
@@ -149,4 +147,7 @@
     exportWorkspace,
     importWorkspace
   };
+
+  window.MyNoteStorage = browserIndexedDbStorage;
+  window.MyNoteStorageProvider = browserIndexedDbStorage;
 })();

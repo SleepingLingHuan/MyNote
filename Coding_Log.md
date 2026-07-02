@@ -43,6 +43,15 @@
 - **Timestamp:** 2026-07-02 11:58:47 UTC+8
 - **Action:** Added category-menu article creation and theme switching.
 - **Outcome:** Category ellipsis menus now include a new-article action prefilled with that category, added a persistent light/dark theme toggle in the lower-left sidebar, introduced dark VS Code-like theme variables, changed the editor mode toggle away from the theme-style icon, updated cache-busting versions, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 13:58:35 UTC+8
+- **Action:** Started desktop-readiness implementation.
+- **Outcome:** Added platform runtime detection, introduced a shared workspace format normalizer for browser and future desktop storage, routed IndexedDB import/export through the shared workspace format, added desktop runtime/update contract files, updated script loading order and cache-busting versions, and verified syntax plus localhost serving checks.
+- **Timestamp:** 2026-07-02 14:51:46 UTC+8
+- **Action:** Added initial Tauri desktop shell.
+- **Outcome:** Created npm scripts and Tauri v2 Rust project structure, installed `@tauri-apps/cli`, added minimal macOS/Windows-ready Tauri config, added placeholder icon required by Tauri context generation, ignored generated dependency/build folders, and verified `cargo check` passes for the desktop crate.
+- **Timestamp:** 2026-07-02 15:07:31 UTC+8
+- **Action:** Built macOS desktop app bundle.
+- **Outcome:** Ran Tauri release build successfully, generated `MyNote.app` and `MyNote_0.1.0_aarch64.dmg`, verified bundle metadata and file paths, launched the generated app with `open`, and confirmed the user successfully opened `MyNote.app`.
 - **Timestamp:** 2026-07-02 12:26:03 UTC+8
 - **Action:** Prepared project files for initial GitHub upload.
 - **Outcome:** Added minimal repository ignore rules so local editor, log, and macOS metadata files are excluded from the initial commit.
@@ -52,3 +61,15 @@
 - **Timestamp:** 2026-07-02 12:28:11 UTC+8
 - **Action:** Created and pushed the initial GitHub commit.
 - **Outcome:** Committed the project files and pushed the `main` branch to `https://github.com/SleepingLingHuan/MyNote.git` with upstream tracking enabled.
+- **Timestamp:** 2026-07-02 16:49:25 UTC+8
+- **Action:** Updated desktop storage integration, regenerated app icons, and replaced native select dropdowns.
+- **Outcome:** Added Tauri-backed local workspace JSON storage for the desktop runtime, regenerated Tauri icon assets from the root `icon.png`, configured macOS/Windows bundle icons, replaced native select controls with web-styled custom dropdowns in dialogs, rebuilt `MyNote.app` and the DMG successfully, and verified JavaScript syntax plus Rust `cargo check`.
+- **Timestamp:** 2026-07-02 16:57:57 UTC+8
+- **Action:** Wrote the project README introduction.
+- **Outcome:** Added a concise open-source project introduction focused on MyNote's purpose, writing experience, core user-facing features, design philosophy, target users, and open-source note without including technical implementation details.
+- **Timestamp:** 2026-07-02 17:02:16 UTC+8
+- **Action:** Added README installation instructions for macOS users.
+- **Outcome:** Documented the user-facing DMG installation flow, noted macOS unknown-developer handling, clarified the current Apple Silicon package target, and kept the README focused on project and usage information.
+- **Timestamp:** 2026-07-02 17:08:42 UTC+8
+- **Action:** Prepared desktop app updates for GitHub push.
+- **Outcome:** Removed unused generated icon copies and mobile icon directories, verified JavaScript syntax checks and Rust `cargo check`, confirmed generated build outputs remain ignored, and prepared the current source changes for commit and push.

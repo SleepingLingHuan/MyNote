@@ -96,7 +96,14 @@
         </label>
         <label class="field">
           <span>文章分类</span>
-          <select id="new-entry-category-select" required></select>
+          <input id="new-entry-category-select" type="hidden">
+          <div id="new-entry-category-select-control" class="custom-select" data-custom-select>
+            <button class="custom-select-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select-value">选择分类</span>
+              <span class="custom-select-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="custom-select-menu" role="listbox"></div>
+          </div>
         </label>
         <div class="dialog-actions">
           <button id="cancel-new-entry-button" class="tool-button" type="button">取消</button>
@@ -118,7 +125,14 @@
         </label>
         <label id="app-dialog-select-field" class="field hidden">
           <span id="app-dialog-select-label">选择一项</span>
-          <select id="app-dialog-select"></select>
+          <input id="app-dialog-select" type="hidden">
+          <div id="app-dialog-select-control" class="custom-select" data-custom-select>
+            <button class="custom-select-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select-value">选择一项</span>
+              <span class="custom-select-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="custom-select-menu" role="listbox"></div>
+          </div>
         </label>
         <div class="dialog-actions">
           <button id="app-dialog-cancel" class="tool-button" type="button">取消</button>
@@ -127,8 +141,11 @@
       </form>
     </dialog>
 
-    <script src="./src/storage.js?v=20260702-1206"></script>
-    <script src="./src/markdown.js?v=20260702-1206"></script>
-    <script src="./src/app.js?v=20260702-1206"></script>
+    <script src="./src/platform.js?v=20260702-1525"></script>
+    <script src="./src/workspace-format.js?v=20260702-1525"></script>
+    <script src="./src/storage.js?v=20260702-1525"></script>
+    <script src="./src/tauri-storage.js?v=20260702-1525"></script>
+    <script src="./src/markdown.js?v=20260702-1525"></script>
+    <script src="./src/app.js?v=20260702-1615"></script>
   </body>
 </html>

@@ -44,6 +44,7 @@
     newEntryForm: document.getElementById("new-entry-form"),
     newEntryTitleInput: document.getElementById("new-entry-title-input"),
     newEntryCategorySelect: document.getElementById("new-entry-category-select"),
+    newEntryCategorySelectControl: document.getElementById("new-entry-category-select-control"),
     cancelNewEntryButton: document.getElementById("cancel-new-entry-button"),
     appDialog: document.getElementById("app-dialog"),
     appDialogForm: document.getElementById("app-dialog-form"),
@@ -56,6 +57,7 @@
     appDialogSelectField: document.getElementById("app-dialog-select-field"),
     appDialogSelectLabel: document.getElementById("app-dialog-select-label"),
     appDialogSelect: document.getElementById("app-dialog-select"),
+    appDialogSelectControl: document.getElementById("app-dialog-select-control"),
     appDialogCancel: document.getElementById("app-dialog-cancel"),
     appDialogConfirm: document.getElementById("app-dialog-confirm")
   };
@@ -256,9 +258,17 @@
       nodes.categoryList.appendChild(card);
     });
 
-    nodes.newEntryCategorySelect.innerHTML = getCategoryOptions()
-      .map(({ category, label }) => `<option value="${category.id}">${escapeText(label)}</option>`)
-      .join("");
+    const categoryOptions = getCategoryOptions().map(({ category, label }) => ({
+      value: category.id,
+      label
+    }));
+    setCustomSelectOptions(
+      nodes.newEntryCategorySelect,
+      nodes.newEntryCategorySelectControl,
+      categoryOptions,
+      nodes.newEntryCategorySelect.value || categoryOptions[0]?.value || "",
+      "选择分类"
+    );
   }
 
   function renderEntryList() {
@@ -371,6 +381,62 @@
       .replaceAll("'", "&#039;");
   }
 
+  function getCustomSelectParts(control) {
+    return {
+      button: control.querySelector(".custom-select-button"),
+      value: control.querySelector(".custom-select-value"),
+      menu: control.querySelector(".custom-select-menu")
+    };
+  }
+
+  function closeCustomSelects(exceptControl = null) {
+    document.querySelectorAll("[data-custom-select].open").forEach((control) => {
+      if (control === exceptControl) {
+        return;
+      }
+
+      control.classList.remove("open");
+      getCustomSelectParts(control).button.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function setCustomSelectOpen(control, isOpen) {
+    closeCustomSelects(isOpen ? control : null);
+    control.classList.toggle("open", isOpen);
+    getCustomSelectParts(control).button.setAttribute("aria-expanded", String(isOpen));
+  }
+
+  function selectCustomSelectValue(input, control, value, placeholder = "选择一项") {
+    const parts = getCustomSelectParts(control);
+    const options = Array.from(parts.menu.querySelectorAll("[data-custom-select-option]"));
+    const selected = options.find((option) => option.dataset.value === value) || options[0] || null;
+
+    input.value = selected ? selected.dataset.value : "";
+    parts.value.textContent = selected ? selected.textContent : placeholder;
+    options.forEach((option) => {
+      const isActive = option === selected;
+      option.classList.toggle("active", isActive);
+      option.setAttribute("aria-selected", String(isActive));
+    });
+  }
+
+  function setCustomSelectOptions(input, control, options, value, placeholder = "选择一项") {
+    const parts = getCustomSelectParts(control);
+    parts.menu.innerHTML = options
+      .map((option) => `
+        <button
+          class="custom-select-option"
+          type="button"
+          role="option"
+          data-custom-select-option
+          data-value="${escapeText(option.value)}"
+        >${escapeText(option.label)}</button>
+      `)
+      .join("");
+    parts.button.disabled = options.length === 0;
+    selectCustomSelectValue(input, control, value, placeholder);
+  }
+
   function updateSelectedEntry(patch) {
     const index = state.entries.findIndex((entry) => entry.id === state.selectedEntryId);
 
@@ -455,15 +521,17 @@
       nodes.appDialogInput.required = needsInput;
       nodes.appDialogInput.disabled = !needsInput;
       nodes.appDialogSelectLabel.textContent = options.selectLabel || "选择一项";
-      nodes.appDialogSelect.innerHTML = (options.options || [])
-        .map((option) => `<option value="${escapeText(option.value)}">${escapeText(option.label)}</option>`)
-        .join("");
-      nodes.appDialogSelect.value = options.defaultValue || "";
-      nodes.appDialogSelect.required = needsSelect;
-      nodes.appDialogSelect.disabled = !needsSelect;
+      setCustomSelectOptions(
+        nodes.appDialogSelect,
+        nodes.appDialogSelectControl,
+        needsSelect ? options.options || [] : [],
+        options.defaultValue || "",
+        options.selectLabel || "选择一项"
+      );
       nodes.appDialogCancel.textContent = options.cancelText || "取消";
       nodes.appDialogConfirm.textContent = options.confirmText || "确认";
       nodes.appDialogCancel.classList.toggle("hidden", options.type === "alert");
+      closeCustomSelects();
 
       function cleanup() {
         nodes.appDialogForm.removeEventListener("submit", handleSubmit);
@@ -513,7 +581,7 @@
         nodes.appDialogInput.focus();
         nodes.appDialogInput.select();
       } else if (needsSelect) {
-        nodes.appDialogSelect.focus();
+        getCustomSelectParts(nodes.appDialogSelectControl).button.focus();
       } else {
         nodes.appDialogConfirm.focus();
       }
@@ -628,7 +696,12 @@
     }
 
     nodes.newEntryTitleInput.value = "";
-    nodes.newEntryCategorySelect.value = categoryId;
+    selectCustomSelectValue(
+      nodes.newEntryCategorySelect,
+      nodes.newEntryCategorySelectControl,
+      categoryId,
+      "选择分类"
+    );
 
     openDialog(nodes.newEntryDialog);
     nodes.newEntryTitleInput.focus();
@@ -1252,6 +1325,32 @@
       closeDialog(nodes.newEntryDialog);
     });
 
+    document.addEventListener("click", (event) => {
+      const selectButton = event.target.closest(".custom-select-button");
+      const optionButton = event.target.closest("[data-custom-select-option]");
+
+      if (selectButton) {
+        const control = selectButton.closest("[data-custom-select]");
+        event.stopPropagation();
+        setCustomSelectOpen(control, !control.classList.contains("open"));
+        return;
+      }
+
+      if (optionButton) {
+        const control = optionButton.closest("[data-custom-select]");
+        const input = control.parentElement.querySelector('input[type="hidden"]');
+        event.stopPropagation();
+        selectCustomSelectValue(input, control, optionButton.dataset.value);
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        setCustomSelectOpen(control, false);
+        return;
+      }
+
+      if (!event.target.closest("[data-custom-select]")) {
+        closeCustomSelects();
+      }
+    });
+
     nodes.categoryNav.addEventListener("click", (event) => {
       const actionButton = event.target.closest("[data-category-action]");
       const menuButton = event.target.closest("[data-category-menu]");
@@ -1438,6 +1537,10 @@
     });
 
     document.addEventListener("keydown", async (event) => {
+      if (event.key === "Escape") {
+        closeCustomSelects();
+      }
+
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
         event.preventDefault();
         window.clearTimeout(state.saveTimer);
