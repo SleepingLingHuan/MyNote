@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyNote</title>
+    <link rel="stylesheet" href="./styles.css?v=20260702-1206">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="分类">
+        <div class="brand">
+          <div>
+            <p class="eyebrow">Local Journal</p>
+            <h1>MyNote</h1>
+          </div>
+          <button id="new-category-button" class="icon-button primary" type="button" title="新建分类" aria-label="新建分类">+</button>
+        </div>
+
+        <nav class="category-nav">
+          <article class="category-item active" data-category-filter="all">
+            <button class="category-main" type="button" data-category-open>
+              <span class="category-dot all-dot"></span>
+              <span>全部</span>
+              <span id="all-count" class="count">0</span>
+            </button>
+          </article>
+          <div id="category-list"></div>
+          <input id="import-input" class="hidden-file-input" type="file" accept="application/json,text/markdown,.json,.md,.markdown">
+        </nav>
+        <button id="theme-toggle-button" class="icon-button theme-toggle-button" type="button" title="切换深色主题" aria-label="切换深色主题">◐</button>
+      </aside>
+
+      <main class="workspace">
+        <section class="entry-panel" aria-label="文章列表">
+          <div class="entry-panel-header">
+            <div>
+              <p class="eyebrow">Entries</p>
+              <h2 id="entry-panel-title">全部文章</h2>
+            </div>
+            <button id="new-entry-list-button" class="icon-button entry-create-button" type="button" title="新建文章" aria-label="新建文章">+</button>
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="search-input" type="search" placeholder="搜索标题或正文">
+            </label>
+          </div>
+          <div id="entry-list" class="entry-list"></div>
+          <button id="entry-panel-toggle" class="entry-panel-toggle" type="button" aria-label="收起文章列表" title="收起文章列表">‹</button>
+        </section>
+
+        <section class="editor-panel" aria-label="编辑器">
+          <div id="empty-state" class="empty-state">
+            <p class="eyebrow">Ready</p>
+            <h2>写一点今天的事</h2>
+            <button id="empty-new-entry-button" class="solid-button" type="button">新建文章</button>
+          </div>
+
+          <div id="editor-view" class="editor-view hidden">
+            <header class="editor-header">
+              <div class="title-group">
+                <input id="title-input" class="title-input" type="text" placeholder="未命名文章" aria-label="文章名称">
+                <div class="entry-dates">
+                  <span id="created-at-text">创建：--</span>
+                  <span id="saved-at-text">最近保存：--</span>
+                </div>
+              </div>
+              <div class="editor-meta">
+                <button id="mode-toggle-button" class="icon-button editor-icon-button" type="button" title="切换预览" aria-label="切换预览">◧</button>
+                <label class="icon-button editor-icon-button image-icon-button" title="导入图片" aria-label="导入图片">
+                  +
+                  <input id="image-input" type="file" accept="image/*">
+                </label>
+                <span id="save-status" class="save-status saved" title="已保存" aria-label="已保存">✓</span>
+              </div>
+            </header>
+
+            <div id="editor-grid" class="editor-grid edit-mode">
+              <textarea id="content-input" class="markdown-input" spellcheck="false" placeholder="用 Markdown 记录。"></textarea>
+              <article id="preview" class="markdown-preview"></article>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="new-entry-dialog" class="entry-dialog">
+      <form id="new-entry-form" method="dialog" class="entry-dialog-form">
+        <div>
+          <p class="eyebrow">New Entry</p>
+          <h2>新建文章</h2>
+        </div>
+        <p class="dialog-message">创建时会自动记录当前系统时间，后续可在编辑器中修改名称和分类。</p>
+        <label class="field">
+          <span>文章名称</span>
+          <input id="new-entry-title-input" type="text" placeholder="例如：今天的记录" required>
+        </label>
+        <label class="field">
+          <span>文章分类</span>
+          <input id="new-entry-category-select" type="hidden">
+          <div id="new-entry-category-select-control" class="custom-select" data-custom-select>
+            <button class="custom-select-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select-value">选择分类</span>
+              <span class="custom-select-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="custom-select-menu" role="listbox"></div>
+          </div>
+        </label>
+        <div class="dialog-actions">
+          <button id="cancel-new-entry-button" class="tool-button" type="button">取消</button>
+          <button class="solid-button" type="submit">创建</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="app-dialog" class="entry-dialog">
+      <form id="app-dialog-form" method="dialog" class="entry-dialog-form">
+        <div>
+          <p id="app-dialog-eyebrow" class="eyebrow">Notice</p>
+          <h2 id="app-dialog-title">提示</h2>
+        </div>
+        <p id="app-dialog-message" class="dialog-message"></p>
+        <label id="app-dialog-field" class="field hidden">
+          <span id="app-dialog-field-label">输入内容</span>
+          <input id="app-dialog-input" type="text">
+        </label>
+        <label id="app-dialog-select-field" class="field hidden">
+          <span id="app-dialog-select-label">选择一项</span>
+          <input id="app-dialog-select" type="hidden">
+          <div id="app-dialog-select-control" class="custom-select" data-custom-select>
+            <button class="custom-select-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select-value">选择一项</span>
+              <span class="custom-select-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="custom-select-menu" role="listbox"></div>
+          </div>
+        </label>
+        <div class="dialog-actions">
+          <button id="app-dialog-cancel" class="tool-button" type="button">取消</button>
+          <button id="app-dialog-confirm" class="solid-button" type="submit">确认</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./src/platform.js?v=20260702-1525"></script>
+    <script src="./src/workspace-format.js?v=20260702-1525"></script>
+    <script src="./src/storage.js?v=20260702-1525"></script>
+    <script src="./src/tauri-storage.js?v=20260702-1525"></script>
+    <script src="./src/markdown.js?v=20260702-1525"></script>
+    <script src="./src/app.js?v=20260702-1615"></script>
+  </body>
+</html>
