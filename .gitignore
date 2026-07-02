@@ -5,3 +5,11 @@
 node_modules/
 src-tauri/target/
 src-tauri/gen/
+
+# Local agent instructions and development records
+AGENTS.md
+Coding_Log.md
+plan.md
+docs/
+.agents/
+.codex/
